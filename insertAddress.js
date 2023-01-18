@@ -134,17 +134,20 @@ function initMap() {
         if (place === null) {
             alert('Recherchez une adresse');
         } else {
-            const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
-                method: 'POST',
-                body: place, // string or object
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': 'WebAPI',
-                    'User-Agent': 'AppwayClient',
-                }
-            });
-
-            window.close();
+            try {
+                const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
+                    method: 'POST',
+                    body: place, // string or object
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': 'WebAPI',
+                        'User-Agent': 'AppwayClient',
+                    }
+                });
+            }
+            finally {
+                window.close();
+            }
         }
     }
 
@@ -154,9 +157,9 @@ function initMap() {
             .then(async (result) => {
                 const { results } = result;
 
-                renderAddress(results[0]);  
-                fillInAddress(results[0]); 
-                
+                renderAddress(results[0]);
+                fillInAddress(results[0]);
+
                 alert(JSON.stringify(result, null, 2));
             })
             .catch((e) => {
