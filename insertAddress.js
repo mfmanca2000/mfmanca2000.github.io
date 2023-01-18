@@ -6,6 +6,8 @@ let zoom;
 let markerRequested;
 let place;
 let geocoder;
+let response;
+let responseDiv;
 
 
 function initMap() {
@@ -60,6 +62,16 @@ function initMap() {
         zoomControl: CONFIGURATION.mapOptions.zoomControl,
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl
     });
+
+    response = document.createElement("pre");
+    response.id = "response";
+    response.innerText = "";
+    responseDiv = document.createElement("div");
+    responseDiv.id = "response-container";
+    responseDiv.appendChild(response);
+
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(responseDiv);
+
 
     geocoder = new google.maps.Geocoder();
 
@@ -145,6 +157,9 @@ function initMap() {
                     }
                 });
             }
+            catch (e) {
+                alert('An error occurred:' + e)
+            }
             finally {
                 window.close();
             }
@@ -159,6 +174,9 @@ function initMap() {
 
                 renderAddress(results[0]);
                 fillInAddress(results[0]);
+
+                responseDiv.style.display = "block";
+                response.innerText = JSON.stringify(result, null, 2);
 
                 //alert(JSON.stringify(result, null, 2));
             })
