@@ -160,7 +160,7 @@ function initMap() {
                 renderAddress(results[0]);
                 fillInAddress(results[0]);
 
-                alert(JSON.stringify(result, null, 2));
+                //alert(JSON.stringify(result, null, 2));
             })
             .catch((e) => {
                 alert("Geocode was not successful for the following reason: " + e);
