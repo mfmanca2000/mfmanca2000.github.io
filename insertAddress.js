@@ -36,10 +36,6 @@ function initMap() {
         alert("Init failed: " + e);
     }
 
-
-
-
-
     const CONFIGURATION = {
         "ctaTitle": "Checkout",
         "mapOptions": { "center": { "lat": latitude, "lng": longitude }, "fullscreenControl": true, "mapTypeControl": false, "streetViewControl": false, "zoom": zoom, "zoomControl": true, "maxZoom": 22, "mapId": "" },
@@ -147,6 +143,8 @@ function initMap() {
                     'User-Agent': 'AppwayClient',
                 }
             });
+
+            window.close();
         }
     }
 
