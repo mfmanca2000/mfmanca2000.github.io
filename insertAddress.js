@@ -161,7 +161,7 @@ function initMap() {
                 alert('An error occurred:' + e)
             }
             finally {
-                window.close();
+                //window.close();
             }
         }
     }
