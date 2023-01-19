@@ -8,6 +8,7 @@ let place;
 let geocoder;
 let response;
 let responseDiv;
+let debugMode;
 
 
 function initMap() {
@@ -17,6 +18,7 @@ function initMap() {
     try {
         var params = new URLSearchParams(window.location.search);
 
+        debugMode = params.get('debug');
         processInstanceId = params.get('processInstanceId');
         propertyId = params.get('propertyId');
         latitude = params.get('lat');
@@ -63,14 +65,16 @@ function initMap() {
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl
     });
 
-    response = document.createElement("pre");
-    response.id = "response";
-    response.innerText = "";
-    responseDiv = document.createElement("div");
-    responseDiv.id = "response-container";
-    responseDiv.appendChild(response);
+    if (debugMode == 'true') {
+        response = document.createElement("pre");
+        response.id = "response";
+        response.innerText = "";
+        responseDiv = document.createElement("div");
+        responseDiv.id = "response-container";
+        responseDiv.appendChild(response);
 
-    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(responseDiv);
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(responseDiv);
+    }
 
 
     geocoder = new google.maps.Geocoder();
@@ -175,9 +179,10 @@ function initMap() {
                 renderAddress(results[0]);
                 fillInAddress(results[0]);
 
-                responseDiv.style.display = "block";
-                response.innerText = JSON.stringify(result, null, 2);
-
+                if (debugMode == 'true') {
+                    responseDiv.style.display = "block";
+                    response.innerText = JSON.stringify(result, null, 2);
+                }
                 //alert(JSON.stringify(result, null, 2));
             })
             .catch((e) => {
