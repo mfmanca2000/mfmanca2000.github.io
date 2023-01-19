@@ -86,9 +86,12 @@ function initMap() {
     const marker = new google.maps.Marker({ map: map, draggable: false });
     if (markerRequested) {
         let latlng = new google.maps.LatLng(latitude, longitude);
-        marker.setPosition(latlng);
-        marker.setVisible(true);
+        //marker.setPosition(latlng);
+        //marker.setVisible(true);
+
+        getPlace(latlng);
     }
+    
 
     const autocompleteInput = getFormInputElement('location');
 
