@@ -89,7 +89,7 @@ function initMap() {
         //marker.setPosition(latlng);
         //marker.setVisible(true);
 
-        getPlace({ location: latLng });
+        getPlace({ location: latlng });
 
     }
     
