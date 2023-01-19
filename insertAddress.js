@@ -90,6 +90,7 @@ function initMap() {
         //marker.setVisible(true);
 
         getPlace(latlng);
+        
     }
     
 
