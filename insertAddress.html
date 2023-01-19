@@ -20,31 +20,35 @@
     <title>Saisie d'adresse</title>
     <script type="module" src="./insertAddress.js"></script>
     <link rel="stylesheet" type="text/css" href="./insertAddress.css" />
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
 </head>
 
 <body>
     <div class="card-container">
         <div class="panel">
             <div>
-                <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
+                <img class="sb-title-icon"
+                    src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
                 <span class="sb-title">Saisie d'adresse</span>
             </div>
             <input type="text" placeholder="Adresse" id="location-input" />
-            <input type="text" placeholder="Apt, Suite, etc (optional)" disabled/>
-            <input type="text" placeholder="Ville" id="locality-input" disabled/>
+            <input type="text" placeholder="Apt, Suite, etc (optional)" disabled />
+            <input type="text" placeholder="Ville" id="locality-input" disabled />
             <div class="half-input-container">
-                <input type="text" class="half-input" placeholder="Canton" id="administrative_area_level_1-input" disabled/>
-                <input type="text" class="half-input" placeholder="NPA" id="postal_code-input" disabled/>
+                <input type="text" class="half-input" placeholder="Canton" id="administrative_area_level_1-input"
+                    disabled />
+                <input type="text" class="half-input" placeholder="NPA" id="postal_code-input" disabled />
             </div>
-            <input type="text" placeholder="Country" id="country-input" disabled/>
-            <button id="send-address" class="button-cta">S&eacutelectionner</button>            
+            <input type="text" placeholder="Country" id="country-input" disabled />
+            <button id="send-address" class="button-cta">S&eacutelectionner</button>
         </div>
         <div class="map" id="gmp-map"></div>
     </div>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPoEZqFu87V862JPR0J3NaX7zi8ldSPE&callback=initMap&libraries=places&v=weekly"
-      defer
-    ></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPoEZqFu87V862JPR0J3NaX7zi8ldSPE&callback=initMap&libraries=places&v=weekly"
+        defer></script>
 </body>
 
 </html>
