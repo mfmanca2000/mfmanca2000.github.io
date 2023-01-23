@@ -162,8 +162,7 @@ function initMap() {
                         'Content-Type': 'application/json',
                         'X-CSRF-Token': 'WebAPI',
                         'User-Agent': 'AppwayClient',                
-                    },
-                    mode: 'no-cors'
+                    },                    
                 });
             }
             catch (e) {
