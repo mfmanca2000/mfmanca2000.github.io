@@ -28,12 +28,12 @@ function initMap() {
             //We center on Fribourg without a marker
             latitude = 46.807714;
             longitude = 7.1031315;
-            zoom = 10;
+            zoom = 14;
         } else {
             markerRequested = true; //we will add a marker further down in this code
             latitude = parseFloat(latitude);
             longitude = parseFloat(longitude);
-            zoom = 15;
+            zoom = 16;
         }
     }
     catch (e) {
