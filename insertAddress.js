@@ -185,7 +185,7 @@ function initMap() {
 
                 if (debugMode == 'true') {
                     responseDiv.style.display = "block";
-                    response.innerText = 'ProcessID: ' + processInstanceId + '\n';
+                    response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
                     response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
                     response.innerText = response.innerText + JSON.stringify(result, null, 2);
                 }
