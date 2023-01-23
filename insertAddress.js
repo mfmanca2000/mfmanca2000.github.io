@@ -163,7 +163,7 @@ function initMap() {
                         'X-CSRF-Token': 'WebAPI',
                         'User-Agent': 'AppwayClient',                
                     },
-                    // mode: 'no-cors'
+                    mode: 'no-cors'
                 });
             }
             catch (e) {
