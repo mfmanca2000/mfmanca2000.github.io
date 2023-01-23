@@ -28,7 +28,7 @@ function initMap() {
             //We center on Fribourg without a marker
             latitude = 46.8019884;
             longitude = 7.1512056;
-            zoom = 14;
+            zoom = 18;
         } else {
             markerRequested = true; //we will add a marker further down in this code
             latitude = parseFloat(latitude);
