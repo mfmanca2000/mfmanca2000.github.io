@@ -26,8 +26,8 @@ function initMap() {
 
         if (latitude === null || latitude === "" || longitude === null || longitude === "") {
             //We center on Fribourg without a marker
-            latitude = 46.807714;
-            longitude = 7.1031315;
+            latitude = 46.8019884;
+            longitude = 7.1512056;
             zoom = 14;
         } else {
             markerRequested = true; //we will add a marker further down in this code
