@@ -80,3 +80,5 @@ function init() {
 
   map.mapTypes.set("Orthophoto", OrthophotoType);
 }
+
+window.init = init;
