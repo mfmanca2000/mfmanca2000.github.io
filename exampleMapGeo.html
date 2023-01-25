@@ -1,8 +1,9 @@
 <html>
   <head>
-    <title>Simple Map</title>
+    <title>Saisie d'adresse</title>
     <meta name="viewport" content="initial-scale=1.0">
     <script type="module" src="./exampleMapGeo.js"></script>
+    <link rel="stylesheet" type="text/css" href="./insertAddress.css" />
     <meta charset="utf-8">
     <style>
       /* Always set the map height explicitly to define the size of the div
@@ -19,7 +20,28 @@
     </style>
   </head>
   <body>
-    <div id="map"></div>
+
+    <!-- <div id="map"></div> -->
+    <div class="card-container">
+        <div class="panel">
+            <div>
+                <img class="sb-title-icon"
+                    src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
+                <span class="sb-title">Saisie d'adresse</span>
+            </div>
+            <input type="text" placeholder="Adresse" id="location-input" />
+            <input type="text" placeholder="Apt, Suite, etc (optional)" disabled />
+            <input type="text" placeholder="Ville" id="locality-input" disabled />
+            <div class="half-input-container">
+                <input type="text" class="half-input" placeholder="Canton" id="administrative_area_level_1-input"
+                    disabled />
+                <input type="text" class="half-input" placeholder="NPA" id="postal_code-input" disabled />
+            </div>
+            <input type="text" placeholder="Country" id="country-input" disabled />
+            <button id="send-address" class="button-cta">S&eacutelectionner</button>
+        </div>
+        <div class="map" id="gmp-map"></div>
+    </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPoEZqFu87V862JPR0J3NaX7zi8ldSPE&callback=init"
     async defer></script>
   </body>
