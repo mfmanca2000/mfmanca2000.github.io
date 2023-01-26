@@ -298,7 +298,7 @@ function init() {
 
     async function getPlaceGeoAdmin(request) {
         const res = await fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=3857&geometry=' 
-        + request.latLng.lat() + ',' + request.latLng.lng() 
+        + request.latLng.lng() + ',' + request.latLng.lat() 
         + '&mapExtent=0,0,100,100&imageDisplay=100,100,100&tolerance=1'
         + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr' 
         + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
