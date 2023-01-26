@@ -299,13 +299,14 @@ function init() {
     async function getPlaceGeoAdmin(request) {
         const res = await fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=3857&geometry=' 
         + request.latLng.lat() + ',' + request.latLng.lng() 
-        + '&geometryFormat=geojson&geometryType=esriGeometryPoint&tolerance=0&lang=fr' 
+        + '&mapExtent=0,0,100,100&imageDisplay=100,100,100&tolerance=1'
+        + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr' 
         + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
             method: 'GET'
         });
         
        console.log(request.latLng);
-       console.log(res.json());
+       console.log(await res.json());
     }
 
     function getPlace(request) {
