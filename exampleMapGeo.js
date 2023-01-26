@@ -166,9 +166,6 @@ function init() {
     //ch.swisstopo.amtliches-gebaeudeadressverzeichnis
 
 
-
-
-
     map = new google.maps.Map(document.getElementById("gmp-map"), {
         zoom: CONFIGURATION.mapOptions.zoom,
         center: { lat: CONFIGURATION.mapOptions.center.lat, lng: CONFIGURATION.mapOptions.center.lng },
@@ -176,7 +173,7 @@ function init() {
         zoomControl: CONFIGURATION.mapOptions.zoomControl,
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl,
         mapTypeControlOptions: {
-            mapTypeIds: ["Cadastre", "Orthophoto"],
+            mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
         }
     });
