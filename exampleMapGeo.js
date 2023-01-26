@@ -203,7 +203,7 @@ function init() {
 
     map.addListener("click", (e) => {
         //getPlace({ location: e.latLng });
-        getPlaceGeoAdmin({ location: e.LatLng });
+        getPlaceGeoAdmin({ location: e.latLng });
     });
 
     const marker = new google.maps.Marker({ map: map, draggable: false });
@@ -297,12 +297,15 @@ function init() {
     }
 
     async function getPlaceGeoAdmin(request) {
-        /*
-        await fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify', {
+        const res = await fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=3857&geometry=' 
+        + request.location.lat + ',' + request.location.lng 
+        + '&geometryFormat=geojson&geometryType=esriGeometryPoint&tolerance=0&lang=fr' 
+        + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
             method: 'GET'
         });
-        */
-       console.log(request);
+        
+       console.log(request.location.lat + ' ' + request.location.lng);
+       console.log(res);
     }
 
     function getPlace(request) {
