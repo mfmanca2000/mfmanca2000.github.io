@@ -124,6 +124,33 @@ function init() {
         }
     });
 
+
+    //ch.swisstopo.amtliches-gebaeudeadressverzeichnis
+    var AddressMapType = new google.maps.ImageMapType({
+        maxZoom: 19,
+        minZoom: 7,
+        name: "Adresses",
+        tileSize: new google.maps.Size(256, 256),
+        credit: "swisstopo",
+        getTileUrl: function (coord, zoom) {
+            return (
+                BASE_URL +
+                "/1.0.0/" +
+                'ch.swisstopo.amtliches-gebaeudeadressverzeichnis' +
+                "/default/current/3857/" +
+                zoom +
+                "/" +
+                coord.x +
+                "/" +
+                coord.y +
+                ".png"
+            );
+        }
+    });
+
+
+
+
     map = new google.maps.Map(document.getElementById("gmp-map"), {
         zoom: CONFIGURATION.mapOptions.zoom,
         center: { lat: CONFIGURATION.mapOptions.center.lat, lng: CONFIGURATION.mapOptions.center.lng },
@@ -131,7 +158,7 @@ function init() {
         zoomControl: CONFIGURATION.mapOptions.zoomControl,
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl,
         mapTypeControlOptions: {
-            mapTypeIds: ["Cadastre", "Orthophoto"],
+            mapTypeIds: ["Cadastre", "Orthophoto", 'Adresses'],
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
         }
     });
@@ -152,6 +179,7 @@ function init() {
     map.setMapTypeId("Cadastre");
 
     map.mapTypes.set("Orthophoto", OrthophotoType);
+    map.mapTypes.set("Adresses", AddressMapType);
 
     geocoder = new google.maps.Geocoder();
 
