@@ -12,6 +12,33 @@ let debugMode;
 
 var map;
 
+const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
+
+const WMS_LAYERNAME = "ch.swisstopo.amtliches-gebaeudeadressverzeichnis";
+
+function xyzToBounds(x, y, z) {
+    const tileSize = EXTENT[1] * 2 / Math.pow(2, z);
+    const minx = EXTENT[0] + x * tileSize;
+    const maxx = EXTENT[0] + (x + 1) * tileSize;
+    // remember y origin starts at top
+    const miny = EXTENT[1] - (y + 1) * tileSize;
+    const maxy = EXTENT[1] - y * tileSize;
+    return [minx, miny, maxx, maxy];
+}
+
+const getTileUrl = (coordinates, zoom) => {
+    return (
+        "https://wms.geo.admin.ch/?LANG=en" +
+        "&REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0" +
+        "&LAYERS=" + WMS_LAYERNAME +
+        "&FORMAT=image/png" +
+        "&CRS=EPSG:3857&WIDTH=256&HEIGHT=256" +
+        "&BBOX=" +
+        xyzToBounds(coordinates.x, coordinates.y, zoom).join(",")
+    );
+};
+
+
 String.prototype.format = function () {
     var formatted = this;
     for (var i = 0; i < arguments.length; i++) {
@@ -124,9 +151,20 @@ function init() {
         }
     });
 
+    /* Custom WMS layer  */
+    const GebauedekarteType = new google.maps.ImageMapType({
+        getTileUrl: getTileUrl,
+        name: "Adresses",
+        credit: "swisstopo",
+        alt: "Gebäude",
+        minZoom: 0,
+        maxZoom: 19,
+        opacity: 0.8
+    });
+
 
     //ch.swisstopo.amtliches-gebaeudeadressverzeichnis
-    
+
 
 
 
@@ -160,6 +198,10 @@ function init() {
 
     map.mapTypes.set("Orthophoto", OrthophotoType);
 
+    map.mapTypes.set("Adresses", GebauedekarteType);
+  
+    map.overlayMapTypes.insertAt(1, GebauedekarteType );
+
     geocoder = new google.maps.Geocoder();
 
     map.addListener("click", (e) => {
@@ -175,7 +217,7 @@ function init() {
         getPlace({ location: latlng });
 
     }
-    
+
 
     const autocompleteInput = getFormInputElement('location');
 
@@ -243,8 +285,8 @@ function init() {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-Token': 'WebAPI',
-                        'User-Agent': 'AppwayClient',                
-                    },                    
+                        'User-Agent': 'AppwayClient',
+                    },
                 });
             }
             catch (e) {
