@@ -302,7 +302,7 @@ function init() {
             method: 'GET'
         });
         */
-       console.log(request.location);
+       console.log(request);
     }
 
     function getPlace(request) {
