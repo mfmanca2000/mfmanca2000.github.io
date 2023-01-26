@@ -1,27 +1,30 @@
 <html>
-  <head>
+
+<head>
     <title>Saisie d'adresse</title>
     <meta name="viewport" content="initial-scale=1.0">
     <script type="module" src="./exampleMapGeo.js"></script>
     <link rel="stylesheet" type="text/css" href="./insertAddress.css" />
     <meta charset="utf-8">
     <style>
-      /* Always set the map height explicitly to define the size of the div
+        /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body>
+        #map {
+            height: 100%;
+        }
 
-    <!-- <div id="map"></div> -->
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
     <div class="card-container">
         <div class="panel">
             <div>
@@ -42,7 +45,9 @@
         </div>
         <div class="map" id="gmp-map"></div>
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPoEZqFu87V862JPR0J3NaX7zi8ldSPE&callback=init&libraries=places&v=weekly"
-    async defer></script>
-  </body>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPoEZqFu87V862JPR0J3NaX7zi8ldSPE&callback=init&libraries=places&v=weekly"
+        async defer></script>
+</body>
+
 </html>

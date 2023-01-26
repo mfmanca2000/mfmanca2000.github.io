@@ -196,13 +196,14 @@ function init() {
     map.mapTypes.set("Orthophoto", OrthophotoType);
 
     map.mapTypes.set("Adresses", GebauedekarteType);
-  
-    map.overlayMapTypes.insertAt(1, GebauedekarteType );
+
+    map.overlayMapTypes.insertAt(1, GebauedekarteType);
 
     geocoder = new google.maps.Geocoder();
 
     map.addListener("click", (e) => {
-        getPlace({ location: e.latLng });
+        //getPlace({ location: e.latLng });
+        getPlaceGeoAdmin({ location: e.LatLng });
     });
 
     const marker = new google.maps.Marker({ map: map, draggable: false });
@@ -293,6 +294,15 @@ function init() {
                 //window.close();
             }
         }
+    }
+
+    async function getPlaceGeoAdmin(request) {
+        /*
+        await fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify', {
+            method: 'GET'
+        });
+        */
+       console.log(request.location);
     }
 
     function getPlace(request) {
