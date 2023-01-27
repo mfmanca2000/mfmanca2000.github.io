@@ -11,6 +11,8 @@ let responseDiv;
 let debugMode;
 
 var map;
+
+//object used to recreate the structure that the Appway WebAPI is waiting for.
 var fakeResults = JSON.parse('{"results": [{"address_components":[{"long_name":"302","short_name":"302","types":["street_number"]},{"long_name":"Route Yverdon-les-Bains","short_name":"Rte Yverdon-les-Bains","types":["route"]},{"long_name":"Cheyres-Châbles","short_name":"Cheyres-Châbles","types":["locality","political"]},{"long_name":"Svizzera","short_name":"CH","types":["country","political"]},{"long_name":"1468","short_name":"1468","types":["postal_code"]}],"formatted_address":"Rte Yverdon-les-Bains 302, 1468 Cheyres, Svizzera","geometry":{"location":{"lat":46.8175536,"lng":6.789963299999999}},"types":["street_address"]}]}');
 
 const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
@@ -238,11 +240,11 @@ function init() {
         fillInAddress(place);
         if (debugMode == 'true') {
             fakeResults.results[0] = place;
-                    responseDiv.style.display = "block";
-                    response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
-                    response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
-                    response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
-                }
+            responseDiv.style.display = "block";
+            response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+            response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+            response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
+        }
     });
 
     function fillInAddress(place) {  // optional parameter
@@ -367,17 +369,17 @@ function init() {
                 component.long_name = info.results[0].properties.zip_label.slice(0, 4);
                 component.short_name = info.results[0].properties.zip_label.slice(0, 4);
             }
-            
+
         }
         fakeResults.results[0].formatted_address = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
         fakeResults.results[0].geometry.location.lat = latLng.lat();
-        fakeResults.results[0].geometry.location.lng = latLng.lng();        
+        fakeResults.results[0].geometry.location.lng = latLng.lng();
 
         place = fakeResults;
     }
 
     function renderAddressGeoAdmin(latLng) {
-        let googleLatLng = new google.maps.LatLng(latLng.lat(), latLng.lng());        
+        let googleLatLng = new google.maps.LatLng(latLng.lat(), latLng.lng());
         map.panTo(googleLatLng);
         marker.setPosition(googleLatLng);
         marker.setVisible(true);
@@ -401,7 +403,7 @@ function init() {
 
     }
 
-    
+
 }
 
 window.init = init;
