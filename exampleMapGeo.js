@@ -346,7 +346,7 @@ function init() {
     }
 
 
-    function fillInAddressGeoAdmin(info, latLng) {  // optional parameter
+    function fillInAddressGeoAdmin(info, latLng) {  
 
         document.getElementById('location-input').value = info.results[0].properties.adr_number + ' ' + info.results[0].properties.stn_label;
         document.getElementById('locality-input').value = info.results[0].properties.com_name;
@@ -374,6 +374,7 @@ function init() {
         fakeResults.results[0].formatted_address = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
         fakeResults.results[0].geometry.location.lat = latLng.lat();
         fakeResults.results[0].geometry.location.lng = latLng.lng();
+        fakeResults.results[0].name = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number;
 
         place = fakeResults;
     }
@@ -391,7 +392,7 @@ function init() {
         fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=4326&geometry='
             + request.latLng.lng() + ',' + request.latLng.lat()
             + '&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=10'
-            + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=false'
+            + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true'
             + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
             method: 'GET'
         })
