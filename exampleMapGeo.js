@@ -236,6 +236,13 @@ function init() {
         }
         renderAddress(place);
         fillInAddress(place);
+        if (debugMode == 'true') {
+            fakeResults.results[0] = place;
+                    responseDiv.style.display = "block";
+                    response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+                    response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+                    response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
+                }
     });
 
     function fillInAddress(place) {  // optional parameter
@@ -343,7 +350,7 @@ function init() {
         document.getElementById('locality-input').value = info.results[0].properties.com_name;
         document.getElementById('postal_code-input').value = info.results[0].properties.zip_label.slice(0, 4);
 
-        for (const component of fakeResults[0].address_components) {
+        for (const component of fakeResults.results[0].address_components) {
             if (component.types[0] === 'route') {
                 component.long_name = info.results[0].properties.stn_label;
                 component.short_name = info.results[0].properties.stn_label;
@@ -362,11 +369,11 @@ function init() {
             }
             
         }
-        fakeResults[0].formattedAddress = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
-        fakeResults[0].geometry.location.lat = latLng.lat();
-        fakeResults[0].geometry.location.lng = latLng.lng();        
+        fakeResults.results[0].formatted_address = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
+        fakeResults.results[0].geometry.location.lat = latLng.lat();
+        fakeResults.results[0].geometry.location.lng = latLng.lng();        
 
-        place = fakeResults[0];
+        place = fakeResults;
     }
 
     function renderAddressGeoAdmin(latLng) {
