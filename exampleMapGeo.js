@@ -306,7 +306,8 @@ function init() {
         });
         
        console.log(request.latLng);
-       console.log(await res.json());
+       var obj = JSON.parse(res);
+       console.log(obj.length);
     }
 
     function getPlace(request) {
