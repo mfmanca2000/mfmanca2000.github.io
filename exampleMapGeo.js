@@ -11,7 +11,7 @@ let responseDiv;
 let debugMode;
 
 var map;
-var fakePlace = JSON.parse('{"address_components":[{"long_name":"302","short_name":"302","types":["street_number"]},{"long_name":"Route Yverdon-les-Bains","short_name":"Rte Yverdon-les-Bains","types":["route"]},{"long_name":"Cheyres-Châbles","short_name":"Cheyres-Châbles","types":["locality","political"]},{"long_name":"Svizzera","short_name":"CH","types":["country","political"]},{"long_name":"1468","short_name":"1468","types":["postal_code"]}],"formatted_address":"Rte Yverdon-les-Bains 302, 1468 Cheyres, Svizzera","geometry":{"location":{"lat":46.8175536,"lng":6.789963299999999}},"types":["street_address"]}');
+var fakeResults = JSON.parse('{"results": [{"address_components":[{"long_name":"302","short_name":"302","types":["street_number"]},{"long_name":"Route Yverdon-les-Bains","short_name":"Rte Yverdon-les-Bains","types":["route"]},{"long_name":"Cheyres-Châbles","short_name":"Cheyres-Châbles","types":["locality","political"]},{"long_name":"Svizzera","short_name":"CH","types":["country","political"]},{"long_name":"1468","short_name":"1468","types":["postal_code"]}],"formatted_address":"Rte Yverdon-les-Bains 302, 1468 Cheyres, Svizzera","geometry":{"location":{"lat":46.8175536,"lng":6.789963299999999}},"types":["street_address"]}]}');
 
 const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
@@ -322,10 +322,17 @@ function init() {
 
 
     function getAllInfoGeoAdmin(info, latLng) {
-        if (info.length > 0) {
-            console.log(JSON.stringify(info.results[0]));
-            fillInAddressGeoAdmin(info);
+        if (info.results.length > 0) {
+            //console.log(JSON.stringify(info.results[0]));
+            fillInAddressGeoAdmin(info, latLng);
             renderAddressGeoAdmin(latLng);
+
+            if (debugMode == 'true') {
+                responseDiv.style.display = "block";
+                response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+                response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+                response.innerText = response.innerText + JSON.stringify(place, null, 2);
+            }
         }
     }
 
@@ -336,7 +343,7 @@ function init() {
         document.getElementById('locality-input').value = info.results[0].properties.com_name;
         document.getElementById('postal_code-input').value = info.results[0].properties.zip_label.slice(0, 4);
 
-        for (const component of fakePlace.address_components) {
+        for (const component of fakeResults[0].address_components) {
             if (component.types[0] === 'route') {
                 component.long_name = info.results[0].properties.stn_label;
                 component.short_name = info.results[0].properties.stn_label;
@@ -355,15 +362,15 @@ function init() {
             }
             
         }
-        fakePlace.formattedAddress = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
-        fakePlace.geometry.location.lat = latLng.lat;
-        fakePlace.geometry.location.lng = latLng.lng;        
+        fakeResults[0].formattedAddress = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
+        fakeResults[0].geometry.location.lat = latLng.lat();
+        fakeResults[0].geometry.location.lng = latLng.lng();        
 
-        place = fakePlace;
+        place = fakeResults[0];
     }
 
     function renderAddressGeoAdmin(latLng) {
-        let googleLatLng = new google.maps.LatLng(latLng.lat, latLng.lng);        
+        let googleLatLng = new google.maps.LatLng(latLng.lat(), latLng.lng());        
         map.panTo(googleLatLng);
         marker.setPosition(googleLatLng);
         marker.setVisible(true);
