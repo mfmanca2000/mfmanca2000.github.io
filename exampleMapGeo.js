@@ -54,7 +54,7 @@ String.prototype.format = function () {
 
 function init() {
     const submitButton = document.getElementById('send-address');
-    submitButton.addEventListener("click", () => sendPlace());
+    submitButton.addEventListener("click", () => sendPlace(place));
 
     try {
         var params = new URLSearchParams(window.location.search);
@@ -238,12 +238,12 @@ function init() {
         }
         renderAddress(place);
         fillInAddress(place);
+
         if (debugMode == 'true') {
-            fakeResults.results[0] = place;
             responseDiv.style.display = "block";
             response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
             response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
-            response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
+            response.innerText = response.innerText + JSON.stringify(place, null, 2);
         }
     });
 
@@ -305,14 +305,14 @@ function init() {
 
 
 
-    async function sendPlace() {
-        if (place === null) {
+    async function sendPlace(body) {
+        if (body === null) {
             alert('Recherchez une adresse');
         } else {
             try {
                 const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
                     method: 'POST',
-                    body: place, // string or object
+                    body: body, // string or object
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-Token': 'WebAPI',
@@ -335,23 +335,12 @@ function init() {
             //console.log(JSON.stringify(info.results[0]));
             fillInAddressGeoAdmin(info, latLng);
             renderAddressGeoAdmin(latLng);
-
-            if (debugMode == 'true') {
-                responseDiv.style.display = "block";
-                response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
-                response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
-                response.innerText = response.innerText + JSON.stringify(place, null, 2);
-            }
+            setFakeResults(info, latLng);
         }
     }
 
 
-    function fillInAddressGeoAdmin(info, latLng) {  
-
-        document.getElementById('location-input').value = info.results[0].properties.adr_number + ' ' + info.results[0].properties.stn_label;
-        document.getElementById('locality-input').value = info.results[0].properties.com_name;
-        document.getElementById('postal_code-input').value = info.results[0].properties.zip_label.slice(0, 4);
-
+    function setFakeResults(info, latLng) {
         for (const component of fakeResults.results[0].address_components) {
             if (component.types[0] === 'route') {
                 component.long_name = info.results[0].properties.stn_label;
@@ -376,7 +365,22 @@ function init() {
         fakeResults.results[0].geometry.location.lng = latLng.lng();
         fakeResults.results[0].name = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number;
 
-        place = fakeResults;
+        if (debugMode == 'true') {
+            responseDiv.style.display = "block";
+            response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+            response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+            response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
+        }
+    }
+
+
+    function fillInAddressGeoAdmin(info, latLng) {
+
+        document.getElementById('location-input').value = info.results[0].properties.adr_number + ' ' + info.results[0].properties.stn_label;
+        document.getElementById('locality-input').value = info.results[0].properties.com_name;
+        document.getElementById('postal_code-input').value = info.results[0].properties.zip_label.slice(0, 4);
+
+        place = fakeResults; //this is for the Button Sélectionner
     }
 
     function renderAddressGeoAdmin(latLng) {
