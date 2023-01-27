@@ -11,6 +11,7 @@ let responseDiv;
 let debugMode;
 
 var map;
+var fakePlace = JSON.parse('{"address_components":[{"long_name":"302","short_name":"302","types":["street_number"]},{"long_name":"Route Yverdon-les-Bains","short_name":"Rte Yverdon-les-Bains","types":["route"]},{"long_name":"Cheyres-Châbles","short_name":"Cheyres-Châbles","types":["locality","political"]},{"long_name":"Svizzera","short_name":"CH","types":["country","political"]},{"long_name":"1468","short_name":"1468","types":["postal_code"]}],"formatted_address":"Rte Yverdon-les-Bains 302, 1468 Cheyres, Svizzera","geometry":{"location":{"lat":46.8175536,"lng":6.789963299999999}},"types":["street_address"]}');
 
 const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
@@ -271,6 +272,29 @@ function init() {
         marker.setVisible(true);
     }
 
+    function getPlace(request) {
+        geocoder
+            .geocode(request)
+            .then(async (result) => {
+                const { results } = result;
+
+                renderAddress(results[0]);
+                fillInAddress(results[0]);
+
+                if (debugMode == 'true') {
+                    responseDiv.style.display = "block";
+                    response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+                    response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+                    response.innerText = response.innerText + JSON.stringify(result, null, 2);
+                }
+                //alert(JSON.stringify(result, null, 2));
+            })
+            .catch((e) => {
+                alert("Geocode was not successful for the following reason: " + e);
+            });
+    }
+
+
 
     async function sendPlace() {
         if (place === null) {
@@ -296,43 +320,74 @@ function init() {
         }
     }
 
+
+    function getAllInfoGeoAdmin(info, latLng) {
+        if (info.length > 0) {
+            console.log(JSON.stringify(info.results[0]));
+            fillInAddressGeoAdmin(info);
+            renderAddressGeoAdmin(latLng);
+        }
+    }
+
+
+    function fillInAddressGeoAdmin(info, latLng) {  // optional parameter
+
+        document.getElementById('location-input').value = info.results[0].properties.adr_number + ' ' + info.results[0].properties.stn_label;
+        document.getElementById('locality-input').value = info.results[0].properties.com_name;
+        document.getElementById('postal_code-input').value = info.results[0].properties.zip_label.slice(0, 4);
+
+        for (const component of fakePlace.address_components) {
+            if (component.types[0] === 'route') {
+                component.long_name = info.results[0].properties.stn_label;
+                component.short_name = info.results[0].properties.stn_label;
+            }
+            if (component.types[0] === 'street_number') {
+                component.long_name = info.results[0].properties.adr_number;
+                component.short_name = info.results[0].properties.adr_number;
+            }
+            if (component.types[0] === 'locality') {
+                component.long_name = info.results[0].properties.com_name;
+                component.short_name = info.results[0].properties.com_name;
+            }
+            if (component.types[0] === 'postal_code') {
+                component.long_name = info.results[0].properties.zip_label.slice(0, 4);
+                component.short_name = info.results[0].properties.zip_label.slice(0, 4);
+            }
+            
+        }
+        fakePlace.formattedAddress = info.results[0].properties.stn_label + ' ' + info.results[0].properties.adr_number + ', ' + info.results[0].properties.zip_label;
+        fakePlace.geometry.location.lat = latLng.lat;
+        fakePlace.geometry.location.lng = latLng.lng;        
+
+        place = fakePlace;
+    }
+
+    function renderAddressGeoAdmin(latLng) {
+        let googleLatLng = new google.maps.LatLng(latLng.lat, latLng.lng);        
+        map.panTo(googleLatLng);
+        marker.setPosition(googleLatLng);
+        marker.setVisible(true);
+    }
+
+
+
     function getPlaceGeoAdmin(request) {
-        fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=4326&geometry=' 
-        + request.latLng.lng() + ',' + request.latLng.lat() 
-        + '&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=10'
-        + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=false' 
-        + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
+        fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=4326&geometry='
+            + request.latLng.lng() + ',' + request.latLng.lat()
+            + '&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=10'
+            + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=false'
+            + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
             method: 'GET'
         })
-        .then(response => response.json())
-        .then(response => console.log(JSON.stringify(response)));
+            .then(response => response.json())
+            .then(response => getAllInfoGeoAdmin(response, request.latLng));
 
         //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis&returnGeometry=false&sr=4326&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=100&lang=fr&geometry=7.08228,46.62277
-        
-       
+
+
     }
 
-    function getPlace(request) {
-        geocoder
-            .geocode(request)
-            .then(async (result) => {
-                const { results } = result;
-
-                renderAddress(results[0]);
-                fillInAddress(results[0]);
-
-                if (debugMode == 'true') {
-                    responseDiv.style.display = "block";
-                    response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
-                    response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
-                    response.innerText = response.innerText + JSON.stringify(result, null, 2);
-                }
-                //alert(JSON.stringify(result, null, 2));
-            })
-            .catch((e) => {
-                alert("Geocode was not successful for the following reason: " + e);
-            });
-    }
+    
 }
 
 window.init = init;
