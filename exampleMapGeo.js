@@ -296,20 +296,20 @@ function init() {
         }
     }
 
-    async function getPlaceGeoAdmin(request) {
-        const res = await fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=4326&geometry=' 
+    function getPlaceGeoAdmin(request) {
+        fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=4326&geometry=' 
         + request.latLng.lng() + ',' + request.latLng.lat() 
         + '&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=10'
         + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=false' 
         + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
             method: 'GET'
-        });
+        })
+        .then(response => response.json())
+        .then(response => console.log(JSON.stringify(response)));
 
         //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis&returnGeometry=false&sr=4326&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=100&lang=fr&geometry=7.08228,46.62277
         
-       console.log(request.latLng);
-       var obj = JSON.parse(res);
-       console.log(obj);
+       
     }
 
     function getPlace(request) {
