@@ -434,11 +434,11 @@ function init() {
 
     function renderTerrainGeoAdmin(info) {
         terrainCoords = [];
-        console.log(JSON.stringify(info.results[0].geometry.coordinates));
+        //console.log(JSON.stringify(info.results[0].geometry.coordinates));
         const vertexes = info.results[0].geometry.coordinates[0];
         vertexes.forEach(convertEachVertex);
 
-        console.log(JSON.stringify(terrainCoords));
+        //console.log(JSON.stringify(terrainCoords));
 
 
         /*
