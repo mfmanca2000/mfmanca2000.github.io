@@ -106,6 +106,7 @@ function init() {
         'locality',
         'administrative_area_level_1',
         'country',
+        'registry',
         'postal_code',
     ];
 
@@ -235,8 +236,6 @@ function init() {
     const marker = new google.maps.Marker({ map: map, draggable: false });
     if (markerRequested) {
         let latlng = new google.maps.LatLng(latitude, longitude);
-        //marker.setPosition(latlng);
-        //marker.setVisible(true);
 
         //getPlace({ location: latlng });
         getPlaceGeoAdmin({ latLng: latlng });
@@ -288,11 +287,10 @@ function init() {
             }
             return '';
         };
-        getFormInputElement('location').value = getAddressComp('street_number') + ' '
-            + getAddressComp('route');
+        getFormInputElement('location').value = getAddressComp('street_number') + ' ' + getAddressComp('route');
         for (const component of componentForm) {
-            // Location field is handled separately above as it has different logic.
-            if (component !== 'location') {
+            // Location and registry fields are handled separately as they have different logic.
+            if (component !== 'location' && component !== 'registry') {
                 getFormInputElement(component).value = getAddressComp(component);
             }
         }
@@ -360,9 +358,29 @@ function init() {
             fillInAddressGeoAdmin(info);
             renderAddressGeoAdmin(latLng);
             setFakeResults(info, latLng);
+        } else {
+            marker.setVisible(false);
+            emptyAddressGeoAdmin();
+            emptyDebugResponse();
         }
     }
 
+    function emptyAddressGeoAdmin() {
+        document.getElementById('location-input').value = '';
+        document.getElementById('locality-input').value = '';
+        document.getElementById('postal_code-input').value = '';
+
+        place = null; //this is for the Button Sélectionner
+    }
+
+
+    function emptyDebugResponse() {
+        if (debugMode == 'true') {
+            responseDiv.style.display = "block";
+            response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+            response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+        }
+    }
 
 
     function setFakeResults(info, latLng) {
@@ -422,6 +440,8 @@ function init() {
             console.log(JSON.stringify(info));
             renderTerrainGeoAdmin(info);
             //TODO: add terrain number to fakeResults...
+            document.getElementById('registry-input').value = info.results[0].properties.number;
+            fakeResults.results[0].registryNumber = info.results[0].properties.number;
         }
     }
 
@@ -429,7 +449,7 @@ function init() {
     var terrainPolygon;
 
     function convertEachVertex(item, index, arr) {
-        let wgs84 = Swisstopo.CHtoWGS(item[0]-2000000, item[1]-1000000);
+        let wgs84 = Swisstopo.CHtoWGS(item[0] - 2000000, item[1] - 1000000);
         terrainCoords.push({ lat: wgs84[1], lng: wgs84[0] });
     }
 
@@ -441,9 +461,7 @@ function init() {
         //console.log(JSON.stringify(info.results[0].geometry.coordinates));
         const vertexes = info.results[0].geometry.coordinates[0];
         vertexes.forEach(convertEachVertex);
-
         //console.log(JSON.stringify(terrainCoords));
-
 
         /*
         const terrainCoords = [
@@ -453,8 +471,7 @@ function init() {
             { lat: 25.774, lng: -80.19 },
         ];
         */
-        
-        
+
         // Construct the polygon.
         terrainPolygon = new google.maps.Polygon({
             paths: terrainCoords,
@@ -465,8 +482,8 @@ function init() {
             fillOpacity: 0.6,
         });
 
-        terrainPolygon.setMap(map);        
-        
+        terrainPolygon.setMap(map);
+
     }
 
 
