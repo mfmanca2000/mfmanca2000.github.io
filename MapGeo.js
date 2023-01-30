@@ -437,7 +437,7 @@ function init() {
         const vertexes = info.results[0].geometry.coordinates;
         vertexes.forEach(convertEachVertex);
 
-
+        console.log(JSON.stringify(terrainCoords));
 
 
         /*
@@ -449,6 +449,7 @@ function init() {
         ];
         */
         
+        /*
         // Construct the polygon.
         const terrainPolygon = new google.maps.Polygon({
             paths: terrainCoords,
@@ -460,6 +461,7 @@ function init() {
         });
 
         terrainPolygon.setMap(map);
+        */
         
     }
 
