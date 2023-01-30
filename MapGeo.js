@@ -219,7 +219,7 @@ function init() {
 
     map.mapTypes.set("Orthophoto", OrthophotoType);
 
-    map.mapTypes.set("Adresses", GebauedekarteType);    
+    map.mapTypes.set("Adresses", GebauedekarteType);
 
     //map.overlayMapTypes.insertAt(1, CadastreInfoType);
 
@@ -239,7 +239,7 @@ function init() {
         //marker.setVisible(true);
 
         //getPlace({ location: latlng });
-        getPlaceGeoAdmin({ latLng : latlng });
+        getPlaceGeoAdmin({ latLng: latlng });
 
     }
 
@@ -336,7 +336,7 @@ function init() {
             try {
                 const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
                     method: 'POST',
-                    body: body, // string or object
+                    body: JSON.stringify(body), // string or object
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-Token': 'WebAPI',
@@ -362,6 +362,7 @@ function init() {
             setFakeResults(info, latLng);
         }
     }
+
 
 
     function setFakeResults(info, latLng) {
@@ -416,7 +417,44 @@ function init() {
 
 
 
+    function getPolygonGeoAdmin(info, lv95east, lv95north) {
+        if (info.results.length > 0) {
+            console.log(JSON.stringify(info));
+            renderTerrainGeoAdmin(info);
+            //TODO: add terrain number to fakeResults...
+        }
+    }
+
+    function renderTerrainGeoAdmin(info) {
+        console.log(JSON.stringify(info.results[0].geometry.coordinates));
+        
+        /*
+        const terrainCoords = [
+            { lat: 25.774, lng: -80.19 },
+            { lat: 18.466, lng: -66.118 },
+            { lat: 32.321, lng: -64.757 },
+            { lat: 25.774, lng: -80.19 },
+        ];
+        
+        // Construct the polygon.
+        const terrainPolygon = new google.maps.Polygon({
+            paths: triangleCoords,
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+        });
+
+        terrainPolygon.setMap(map);
+        */
+    }
+
+
+
     function getPlaceGeoAdmin(request) {
+        //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis&returnGeometry=false&sr=4326&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=100&lang=fr&geometry=7.08228,46.62277
+
         fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=4326&geometry='
             + request.latLng.lng() + ',' + request.latLng.lat()
             + '&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=10'
@@ -427,9 +465,21 @@ function init() {
             .then(response => response.json())
             .then(response => getAllInfoGeoAdmin(response, request.latLng));
 
-        //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis&returnGeometry=false&sr=4326&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=100&lang=fr&geometry=7.08228,46.62277
+        let lv95east = 0;
+        let lv95north = 0;
+        var coordsCH = Swisstopo.WGStoCH(request.latLng.lat(), request.latLng.lng()); // coords = [y, x]
 
-        
+        //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry=2572415.599,1163563.696&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true&layers=all:ch.swisstopo-vd.stand-oerebkataster
+        fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry='
+            + coordsCH[0] + ',' + coordsCH[1]
+            + '&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10'
+            + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true'
+            + '&layers=all:ch.swisstopo-vd.stand-oerebkataster', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(response => getPolygonGeoAdmin(response, coordsCH[0], coordsCH[1]));
+
     }
 
 
