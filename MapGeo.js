@@ -464,14 +464,12 @@ function init() {
         })
             .then(response => response.json())
             .then(response => getAllInfoGeoAdmin(response, request.latLng));
-
-        let lv95east = 0;
-        let lv95north = 0;
+        
         var coordsCH = Swisstopo.WGStoCH(request.latLng.lat(), request.latLng.lng()); // coords = [y, x]
 
         //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry=2572415.599,1163563.696&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true&layers=all:ch.swisstopo-vd.stand-oerebkataster
         fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry='
-            + (coordsCH[0]+2000000.0) + ',' + coordsCH[1]+1000000.0
+            + (coordsCH[0]+2000000.0) + ',' + (coordsCH[1]+1000000.0)
             + '&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10'
             + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true'
             + '&layers=all:ch.swisstopo-vd.stand-oerebkataster', {
