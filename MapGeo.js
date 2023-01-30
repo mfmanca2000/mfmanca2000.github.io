@@ -450,7 +450,7 @@ function init() {
         ];
         */
         
-        /*
+        
         // Construct the polygon.
         const terrainPolygon = new google.maps.Polygon({
             paths: terrainCoords,
@@ -461,8 +461,7 @@ function init() {
             fillOpacity: 0.6,
         });
 
-        terrainPolygon.setMap(map);
-        */
+        terrainPolygon.setMap(map);        
         
     }
 
