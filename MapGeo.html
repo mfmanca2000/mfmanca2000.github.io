@@ -32,16 +32,16 @@
                     src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
                 <span class="sb-title">Saisie d'adresse</span>
             </div>
-            <input type="text" placeholder="Adresse" id="location-input" />
-            <input type="text" placeholder="Apt, Suite, etc (optional)" disabled />
+            <input type="text" placeholder="Adresse" id="location-input" />            
             <input type="text" placeholder="Ville" id="locality-input" disabled />
             <div class="half-input-container">
                 <input type="text" class="half-input" placeholder="Canton" id="administrative_area_level_1-input"
                     disabled />
                 <input type="text" class="half-input" placeholder="NPA" id="postal_code-input" disabled />
             </div>
-            <input type="text" placeholder="Country" id="country-input" disabled />
+            <input type="text" placeholder="Country" id="country-input" disabled hidden/>
             <button id="send-address" class="button-cta">S&eacutelectionner</button>
+            <button id="cancel" class="button-cancel">Annuller</button>
         </div>
         <div class="map" id="gmp-map"></div>
     </div>

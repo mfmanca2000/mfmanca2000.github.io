@@ -219,11 +219,11 @@ function init() {
 
     map.mapTypes.set("Orthophoto", OrthophotoType);
 
-    map.mapTypes.set("Adresses", GebauedekarteType);
-
-    map.overlayMapTypes.insertAt(1, GebauedekarteType);
+    map.mapTypes.set("Adresses", GebauedekarteType);    
 
     map.overlayMapTypes.insertAt(1, CadastreInfoType);
+
+    map.overlayMapTypes.insertAt(1, GebauedekarteType);
 
     geocoder = new google.maps.Geocoder();
 
