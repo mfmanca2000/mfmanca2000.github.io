@@ -425,7 +425,7 @@ function init() {
         }
     }
 
-    const terrainCoords = [];
+    var terrainCoords = [];
 
     function convertEachVertex(item, index, arr) {
         let wgs84 = Swisstopo.CHtoWGS(item[0]-2000000, item[1]-1000000);
