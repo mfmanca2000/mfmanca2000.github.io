@@ -17,7 +17,8 @@ var fakeResults = JSON.parse('{"results": [{"address_components":[{"long_name":"
 
 const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
-const WMS_LAYERNAME = "ch.swisstopo.amtliches-gebaeudeadressverzeichnis";
+//const WMS_LAYERNAME = "ch.swisstopo.amtliches-gebaeudeadressverzeichnis";
+const WMS_LAYERNAME = "ch.bfs.gebaeude_wohnungs_register"
 
 function xyzToBounds(x, y, z) {
     const tileSize = EXTENT[1] * 2 / Math.pow(2, z);
