@@ -428,13 +428,13 @@ function init() {
     const terrainCoords = [];
 
     function convertEachVertex(item, index, arr) {
-        let wgs84 = Swisstopo.CHtoWGS(item[0], item[1]);
+        let wgs84 = Swisstopo.CHtoWGS(item[0]-2000000, item[1]-1000000);
         terrainCoords.push({ lat: wgs84[1], lng: wgs84[0] });
     }
 
     function renderTerrainGeoAdmin(info) {
         console.log(JSON.stringify(info.results[0].geometry.coordinates));
-        const vertexes = info.results[0].geometry.coordinates;
+        const vertexes = info.results[0].geometry.coordinates[0];
         vertexes.forEach(convertEachVertex);
 
         console.log(JSON.stringify(terrainCoords));
