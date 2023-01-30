@@ -356,7 +356,7 @@ function init() {
 
     function getAllInfoGeoAdmin(info, latLng) {
         if (info.results.length > 0) {
-            //console.log(JSON.stringify(info.results[0]));
+            console.log(JSON.stringify(info));
             fillInAddressGeoAdmin(info);
             renderAddressGeoAdmin(latLng);
             setFakeResults(info, latLng);
@@ -400,8 +400,6 @@ function init() {
 
     function fillInAddressGeoAdmin(info) {
 
-        console.log(info);
-
         document.getElementById('location-input').value = info.results[0].properties.adr_number + ' ' + info.results[0].properties.stn_label;
         document.getElementById('locality-input').value = info.results[0].properties.com_name;
         document.getElementById('postal_code-input').value = info.results[0].properties.zip_label.slice(0, 4);
@@ -426,7 +424,7 @@ function init() {
             + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis,ch.swisstopo-vd.stand-oerebkataster', {
             method: 'GET'
         })
-            .then(response => { console.log(response.json()); return response.json(); })
+            .then(response => response.json())
             .then(response => getAllInfoGeoAdmin(response, request.latLng));
 
         //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis&returnGeometry=false&sr=4326&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=100&lang=fr&geometry=7.08228,46.62277
