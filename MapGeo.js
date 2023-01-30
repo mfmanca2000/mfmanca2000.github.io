@@ -221,7 +221,7 @@ function init() {
 
     map.mapTypes.set("Adresses", GebauedekarteType);    
 
-    map.overlayMapTypes.insertAt(1, CadastreInfoType);
+    //map.overlayMapTypes.insertAt(1, CadastreInfoType);
 
     map.overlayMapTypes.insertAt(1, GebauedekarteType);
 
