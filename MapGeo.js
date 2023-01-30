@@ -68,7 +68,9 @@ String.prototype.format = function () {
 
 function init() {
     const submitButton = document.getElementById('send-address');
+    const cancelButton = document.getElementById('cancel');
     submitButton.addEventListener("click", () => sendPlace(place));
+    cancelButton.addEventListener("click", () => window.close());
 
     try {
         var params = new URLSearchParams(window.location.search);
