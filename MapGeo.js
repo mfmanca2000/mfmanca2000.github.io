@@ -213,7 +213,7 @@ function init() {
         //marker.setVisible(true);
 
         //getPlace({ location: latlng });
-        getPlaceGeoAdmin({ latLng : latLng });
+        getPlaceGeoAdmin({ latLng : latlng });
 
     }
 
