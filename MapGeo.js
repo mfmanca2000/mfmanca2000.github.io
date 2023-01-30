@@ -459,7 +459,7 @@ function init() {
             + request.latLng.lng() + ',' + request.latLng.lat()
             + '&mapExtent=8.225000043,46.815000098,8.226323416,46.815890570&imageDisplay=100,100,100&tolerance=10'
             + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true'
-            + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis,ch.swisstopo-vd.stand-oerebkataster', {
+            + '&layers=all:ch.swisstopo.amtliches-gebaeudeadressverzeichnis', {
             method: 'GET'
         })
             .then(response => response.json())
@@ -471,7 +471,7 @@ function init() {
 
         //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry=2572415.599,1163563.696&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true&layers=all:ch.swisstopo-vd.stand-oerebkataster
         fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry='
-            + coordsCH[0] + ',' + coordsCH[1]
+            + (coordsCH[0]+2000000.0) + ',' + coordsCH[1]+1000000.0
             + '&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10'
             + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true'
             + '&layers=all:ch.swisstopo-vd.stand-oerebkataster', {
