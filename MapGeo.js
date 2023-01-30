@@ -18,7 +18,8 @@ var fakeResults = JSON.parse('{"results": [{"address_components":[{"long_name":"
 const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
 //const WMS_LAYERNAME = "ch.swisstopo.amtliches-gebaeudeadressverzeichnis";
-const WMS_LAYERNAME = "ch.bfs.gebaeude_wohnungs_register"
+const WMS_LAYERNAME_ADDRESSES = "ch.bfs.gebaeude_wohnungs_register";
+const WMS_LAYERNAME_CADASTRE_INFO = "ch.swisstopo-vd.stand-oerebkataster";
 
 function xyzToBounds(x, y, z) {
     const tileSize = EXTENT[1] * 2 / Math.pow(2, z);
@@ -30,17 +31,29 @@ function xyzToBounds(x, y, z) {
     return [minx, miny, maxx, maxy];
 }
 
-const getTileUrl = (coordinates, zoom) => {
+const getTileUrlAddresses = (coordinates, zoom) => {
     return (
         "https://wms.geo.admin.ch/?LANG=en" +
         "&REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0" +
-        "&LAYERS=" + WMS_LAYERNAME +
+        "&LAYERS=" + WMS_LAYERNAME_ADDRESSES +
         "&FORMAT=image/png" +
         "&CRS=EPSG:3857&WIDTH=256&HEIGHT=256" +
         "&BBOX=" +
         xyzToBounds(coordinates.x, coordinates.y, zoom).join(",")
     );
 };
+
+const getTileUrlCadastreInfo = (coordinates, zoom) => {
+    return (
+        "https://wms.geo.admin.ch/?LANG=en" +
+        "&REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0" +
+        "&LAYERS=" + WMS_LAYERNAME_CADASTRE_INFO +
+        "&FORMAT=image/png" +
+        "&CRS=EPSG:3857&WIDTH=256&HEIGHT=256" +
+        "&BBOX=" +
+        xyzToBounds(coordinates.x, coordinates.y, zoom).join(",")
+    );
+}
 
 
 String.prototype.format = function () {
@@ -157,10 +170,20 @@ function init() {
 
     /* Custom WMS layer  */
     const GebauedekarteType = new google.maps.ImageMapType({
-        getTileUrl: getTileUrl,
+        getTileUrl: getTileUrlAddresses,
         name: "Adresses",
         credit: "swisstopo",
         alt: "Gebäude",
+        minZoom: 0,
+        maxZoom: 19,
+        opacity: 0.8
+    });
+
+    const CadastreInfoType = new google.maps.ImageMapType({
+        getTileUrl: getTileUrlCadastreInfo,
+        name: "InfoCadastre",
+        credit: "swisstopo",
+        alt: "InfoCadastre",
         minZoom: 0,
         maxZoom: 19,
         opacity: 0.8
@@ -199,6 +222,8 @@ function init() {
     map.mapTypes.set("Adresses", GebauedekarteType);
 
     map.overlayMapTypes.insertAt(1, GebauedekarteType);
+
+    map.overlayMapTypes.insertAt(1, CadastreInfoType);
 
     geocoder = new google.maps.Geocoder();
 
