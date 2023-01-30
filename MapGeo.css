@@ -89,7 +89,7 @@ input:focus::placeholder {
 .button-cancel {
     height: 40px;
     width: 50%;
-    background: #aaaaaa;
+    background: #eeeeee;
     color: black;
     font-size: 15px;
     text-transform: uppercase;
