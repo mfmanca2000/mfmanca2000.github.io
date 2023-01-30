@@ -433,7 +433,9 @@ function init() {
     }
 
     function renderTerrainGeoAdmin(info) {
-        terrainPolygon.setMap();
+        if (terrainPolygon) {
+            terrainPolygon.setMap();
+        }
         terrainCoords = [];
         //console.log(JSON.stringify(info.results[0].geometry.coordinates));
         const vertexes = info.results[0].geometry.coordinates[0];
