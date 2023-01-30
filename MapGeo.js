@@ -165,10 +165,6 @@ function init() {
         opacity: 0.8
     });
 
-
-    //ch.swisstopo.amtliches-gebaeudeadressverzeichnis
-
-
     map = new google.maps.Map(document.getElementById("gmp-map"), {
         zoom: CONFIGURATION.mapOptions.zoom,
         center: { lat: CONFIGURATION.mapOptions.center.lat, lng: CONFIGURATION.mapOptions.center.lng },
@@ -176,7 +172,8 @@ function init() {
         zoomControl: CONFIGURATION.mapOptions.zoomControl,
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl,
         mapTypeControlOptions: {
-            mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
+            // mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
+            mapTypeIds: ["Cadastre", "Orthophoto"],
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
         }
     });
@@ -215,7 +212,8 @@ function init() {
         //marker.setPosition(latlng);
         //marker.setVisible(true);
 
-        getPlace({ location: latlng });
+        //getPlace({ location: latlng });
+        getPlaceGeoAdmin({ latLng : latLng });
 
     }
 
@@ -333,7 +331,7 @@ function init() {
     function getAllInfoGeoAdmin(info, latLng) {
         if (info.results.length > 0) {
             //console.log(JSON.stringify(info.results[0]));
-            fillInAddressGeoAdmin(info, latLng);
+            fillInAddressGeoAdmin(info);
             renderAddressGeoAdmin(latLng);
             setFakeResults(info, latLng);
         }
@@ -374,7 +372,7 @@ function init() {
     }
 
 
-    function fillInAddressGeoAdmin(info, latLng) {
+    function fillInAddressGeoAdmin(info) {
 
         document.getElementById('location-input').value = info.results[0].properties.adr_number + ' ' + info.results[0].properties.stn_label;
         document.getElementById('locality-input').value = info.results[0].properties.com_name;
