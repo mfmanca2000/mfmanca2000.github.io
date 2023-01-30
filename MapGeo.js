@@ -426,6 +426,7 @@ function init() {
     }
 
     var terrainCoords = [];
+    var terrainPolygon;
 
     function convertEachVertex(item, index, arr) {
         let wgs84 = Swisstopo.CHtoWGS(item[0]-2000000, item[1]-1000000);
@@ -455,7 +456,7 @@ function init() {
         
         
         // Construct the polygon.
-        const terrainPolygon = new google.maps.Polygon({
+        terrainPolygon = new google.maps.Polygon({
             paths: terrainCoords,
             strokeColor: "#000000",
             strokeOpacity: 0.8,
