@@ -425,9 +425,21 @@ function init() {
         }
     }
 
+    const terrainCoords = [];
+
+    function convertEachVertex(item, index, arr) {
+        let wgs84 = Swisstopo.CHtoWGS(item[0], item[1]);
+        terrainCoords.push({ lat: wgs84[1], lng: wgs84[0] });
+    }
+
     function renderTerrainGeoAdmin(info) {
         console.log(JSON.stringify(info.results[0].geometry.coordinates));
-        
+        const vertexes = info.results[0].geometry.coordinates;
+        vertexes.forEach(convertEachVertex);
+
+
+
+
         /*
         const terrainCoords = [
             { lat: 25.774, lng: -80.19 },
@@ -435,19 +447,20 @@ function init() {
             { lat: 32.321, lng: -64.757 },
             { lat: 25.774, lng: -80.19 },
         ];
+        */
         
         // Construct the polygon.
         const terrainPolygon = new google.maps.Polygon({
-            paths: triangleCoords,
-            strokeColor: "#FF0000",
+            paths: terrainCoords,
+            strokeColor: "#000000",
             strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
+            strokeWeight: 4,
+            fillColor: "#FFFF00",
+            fillOpacity: 0.6,
         });
 
         terrainPolygon.setMap(map);
-        */
+        
     }
 
 
@@ -464,12 +477,12 @@ function init() {
         })
             .then(response => response.json())
             .then(response => getAllInfoGeoAdmin(response, request.latLng));
-        
+
         var coordsCH = Swisstopo.WGStoCH(request.latLng.lat(), request.latLng.lng()); // coords = [y, x]
 
         //https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry=2572415.599,1163563.696&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true&layers=all:ch.swisstopo-vd.stand-oerebkataster
         fetch('https://api3.geo.admin.ch/rest/services/api/MapServer/identify?sr=2056&geometry='
-            + (coordsCH[0]+2000000.0) + ',' + (coordsCH[1]+1000000.0)
+            + (coordsCH[0] + 2000000.0) + ',' + (coordsCH[1] + 1000000.0)
             + '&mapExtent=2572606.3210881464,1163490.8046886274,2572747.266889792,1163575.6778068822&imageDisplay=1199,722,96&tolerance=10'
             + '&geometryFormat=geojson&geometryType=esriGeometryPoint&lang=fr&returnGeometry=true'
             + '&layers=all:ch.swisstopo-vd.stand-oerebkataster', {
