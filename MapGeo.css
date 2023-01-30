@@ -86,7 +86,7 @@ input:focus::placeholder {
     cursor: pointer;
 }
 
-.- {
+.button-cancel {
     height: 40px;
     width: 50%;
     background: #aaaaaa;
