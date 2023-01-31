@@ -95,6 +95,7 @@ function init() {
             zoom = 16;
         }
 
+        alert(language);
         if (language == 'de') {
             document.getElementById('send-address').innerHTML = 'Auswählen';
             document.getElementById('cancel').innerHTML = 'Abbrechen';
