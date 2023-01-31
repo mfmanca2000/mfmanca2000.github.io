@@ -72,6 +72,12 @@ input:focus::placeholder {
     color: white;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .button-cta {
     height: 40px;
     width: 50%;
@@ -124,5 +130,4 @@ input:focus::placeholder {
     max-width: 90%;
     background-color: rgba(255, 255, 255, 0.95);
     font-size: small;
-  }
-  
+}
