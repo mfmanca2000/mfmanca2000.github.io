@@ -70,7 +70,7 @@ function init() {
     const submitButton = document.getElementById('send-address');
     const cancelButton = document.getElementById('cancel');
     submitButton.addEventListener("click", () => sendPlace(place));
-    cancelButton.addEventListener("click", () => window.close());
+    cancelButton.addEventListener("click", () => sendPlace());
 
     try {
         var params = new URLSearchParams(window.location.search);
@@ -331,7 +331,21 @@ function init() {
 
     async function sendPlace(body) {
         if (body === null) {
-            alert('Recherchez une adresse');
+            try {
+                const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
+                    method: 'POST',
+                    body: '{ "results": []}', // string or object
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': 'WebAPI',
+                        'User-Agent': 'AppwayClient',
+                    },
+                });
+                window.close();
+            }
+            catch (e) {
+                alert('An error occurred:' + e)
+            }
         } else {
             try {
                 const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
