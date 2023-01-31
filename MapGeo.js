@@ -9,6 +9,7 @@ let geocoder;
 let response;
 let responseDiv;
 let debugMode;
+let language;
 
 var map;
 
@@ -80,6 +81,7 @@ function init() {
         propertyId = params.get('propertyId');
         latitude = params.get('lat');
         longitude = params.get('lng');
+        language = params.get("language");
 
         if (latitude === null || latitude === "" || longitude === null || longitude === "") {
             //We center on Fribourg without a marker
@@ -91,6 +93,11 @@ function init() {
             latitude = parseFloat(latitude);
             longitude = parseFloat(longitude);
             zoom = 16;
+        }
+
+        if (language == 'de') {
+            document.getElementById('send-address').innerHTML = 'Auswählen';
+            document.getElementById('cancel').innerHTML = 'Abbrechen';
         }
     }
     catch (e) {
@@ -370,10 +377,10 @@ function init() {
 
     function getAllInfoGeoAdmin(info, latLng) {
         if (info.results.length > 0) {
-            console.log(JSON.stringify(info));            
+            console.log(JSON.stringify(info));
             fillInAddressGeoAdmin(info);
-            renderAddressGeoAdmin(latLng); 
-            setFakeResults(info, latLng);           
+            renderAddressGeoAdmin(latLng);
+            setFakeResults(info, latLng);
         } else {
             marker.setVisible(false);
             emptyAddressGeoAdmin();
@@ -452,15 +459,15 @@ function init() {
     function getPolygonGeoAdmin(info, lv95east, lv95north) {
         if (info.results.length > 0) {
             console.log(JSON.stringify(info));
-            renderTerrainGeoAdmin(info);     
-            document.getElementById('registry-input').value = info.results[0].properties.number; 
-            fakeResults.results[0].registryNumber = info.results[0].properties.number;  
+            renderTerrainGeoAdmin(info);
+            document.getElementById('registry-input').value = info.results[0].properties.number;
+            fakeResults.results[0].registryNumber = info.results[0].properties.number;
             if (debugMode == 'true') {
                 responseDiv.style.display = "block";
                 response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
                 response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
                 response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
-            }                                        
+            }
         }
     }
 
