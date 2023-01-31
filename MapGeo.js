@@ -370,10 +370,10 @@ function init() {
 
     function getAllInfoGeoAdmin(info, latLng) {
         if (info.results.length > 0) {
-            console.log(JSON.stringify(info));
+            console.log(JSON.stringify(info));            
             fillInAddressGeoAdmin(info);
-            renderAddressGeoAdmin(latLng);
-            setFakeResults(info, latLng);
+            renderAddressGeoAdmin(latLng); 
+            setFakeResults(info, latLng);           
         } else {
             marker.setVisible(false);
             emptyAddressGeoAdmin();
@@ -453,10 +453,14 @@ function init() {
         if (info.results.length > 0) {
             console.log(JSON.stringify(info));
             renderTerrainGeoAdmin(info);     
-            fakeResults.results[0].registryNumber = info.results[0].properties.number;       
-            document.getElementById('registry-input').value = info.results[0].properties.number;
-            alert(info.results[0].properties.number);
-            
+            document.getElementById('registry-input').value = info.results[0].properties.number; 
+            fakeResults.results[0].registryNumber = info.results[0].properties.number;  
+            if (debugMode == 'true') {
+                responseDiv.style.display = "block";
+                response.innerText = 'ProcessID: ' + processInstanceId + '\n\n';
+                response.innerText = response.innerText + 'PropertyID: ' + propertyId + '\n\n';
+                response.innerText = response.innerText + JSON.stringify(fakeResults, null, 2);
+            }                                        
         }
     }
 
