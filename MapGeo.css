@@ -72,11 +72,11 @@ input:focus::placeholder {
     color: white;
 }
 
-.button-container {
+/* .button-container {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 .button-cta {
     height: 40px;
