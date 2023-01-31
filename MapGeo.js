@@ -452,10 +452,11 @@ function init() {
     function getPolygonGeoAdmin(info, lv95east, lv95north) {
         if (info.results.length > 0) {
             console.log(JSON.stringify(info));
-            renderTerrainGeoAdmin(info);            
+            renderTerrainGeoAdmin(info);     
+            fakeResults.results[0].registryNumber = info.results[0].properties.number;       
             document.getElementById('registry-input').value = info.results[0].properties.number;
             alert(info.results[0].properties.number);
-            fakeResults.results[0].registryNumber = info.results[0].properties.number;
+            
         }
     }
 
