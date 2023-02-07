@@ -248,7 +248,8 @@ function init() {
 
     }
 
-    map.addListener('zoom_changed', function() {        
+    map.addListener('zoom_changed', function() {    
+        console.log('PASSING BY HERE WHEN ZOOM: ' + map.getZoom());    
         if (map.getZoom() >= 19) {
             //map.overlayMapTypes.insertAt(1, GebauedekarteType);            
         } else {
