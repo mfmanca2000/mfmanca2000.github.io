@@ -249,10 +249,10 @@ function init() {
     }
 
     map.addListener('zoom_changed', function() {        
-        if (map.getZoom() >= 13) {
-            map.overlayMapTypes.insertAt(1, GebauedekarteType);
+        if (map.getZoom() >= 19) {
+            //map.overlayMapTypes.insertAt(1, GebauedekarteType);            
         } else {
-            map.overlayMapTypes.removeAt(1);
+            //map.overlayMapTypes.removeAt(1);
         }
     });
 
