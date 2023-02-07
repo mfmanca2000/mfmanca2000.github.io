@@ -231,7 +231,7 @@ function init() {
 
     //map.overlayMapTypes.insertAt(1, CadastreInfoType);
     //map.overlayMapTypes.insertAt(1, GebauedekarteType);
-    //map.overlayMapTypes.push(null); //we reserve a place for the addresses layer
+    map.overlayMapTypes.push(null); //we reserve a place for the addresses layer
 
     geocoder = new google.maps.Geocoder();
 
@@ -250,13 +250,10 @@ function init() {
     }
 
     map.addListener('zoom_changed', function() {            
-        if (map.getZoom() >= 19) {
-            map.pop();
-            map.push(GebauedekarteType);
-            //map.overlayMapTypes.insertAt(1, GebauedekarteType);            
-        } else {
-            map.pop();
-            //map.overlayMapTypes.removeAt(1);
+        if (map.getZoom() >= 19) {        
+            map.overlayMapTypes.setAt(1, GebauedekarteType);            
+        } else {            
+            map.overlayMapTypes.setAt(1, null);
         }
     });
 
