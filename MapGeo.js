@@ -230,7 +230,7 @@ function init() {
     map.mapTypes.set("Adresses", GebauedekarteType);
 
     //map.overlayMapTypes.insertAt(1, CadastreInfoType);
-    map.overlayMapTypes.insertAt(1, GebauedekarteType);
+    //map.overlayMapTypes.insertAt(1, GebauedekarteType);
 
     geocoder = new google.maps.Geocoder();
 
@@ -250,9 +250,9 @@ function init() {
 
     map.addListener('zoom_changed', function() {        
         if (map.getZoom() >= 13) {
-            GebauedekarteType.setMap(map);
+            map.overlayMapTypes.insertAt(1, GebauedekarteType);
         } else {
-            GebauedekarteType.setMap(null);
+            map.overlayMapTypes.removeAt(1);
         }
     });
 
