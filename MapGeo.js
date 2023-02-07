@@ -240,6 +240,14 @@ function init() {
         getPlaceGeoAdmin(e);
     });
 
+    map.addListener('zoom_changed', function() {            
+        if (map.getZoom() >= 19) {        
+            map.overlayMapTypes.setAt(1, GebauedekarteType);            
+        } else {            
+            map.overlayMapTypes.setAt(1, null);
+        }
+    });
+
     const marker = new google.maps.Marker({ map: map, draggable: false });
     if (markerRequested) {
         let latlng = new google.maps.LatLng(latitude, longitude);
@@ -249,17 +257,7 @@ function init() {
 
     }
 
-    map.addListener('zoom_changed', function() {            
-        if (map.getZoom() >= 19) {        
-            map.overlayMapTypes.setAt(1, GebauedekarteType);            
-        } else {            
-            map.overlayMapTypes.setAt(1, null);
-        }
-    });
-
-
-
-
+    
     const autocompleteInput = getFormInputElement('location');
 
     const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
@@ -515,7 +513,9 @@ function init() {
             fillColor: "#FFFF00",
             fillOpacity: 0.6,
         });
-
+        terrainPolygon.addListener("click", (e) => {            
+            getPlaceGeoAdmin(e);
+        });
         terrainPolygon.setMap(map);
 
     }
