@@ -185,7 +185,7 @@ function init() {
         credit: "swisstopo",
         alt: "Gebäude",
         minZoom: 0,
-        maxZoom: 19,
+        maxZoom: 21,
         opacity: 0.8
     });
 
@@ -195,7 +195,7 @@ function init() {
         credit: "swisstopo",
         alt: "InfoCadastre",
         minZoom: 0,
-        maxZoom: 19,
+        maxZoom: 21,
         opacity: 0.8
     });
 
@@ -206,8 +206,8 @@ function init() {
         zoomControl: CONFIGURATION.mapOptions.zoomControl,
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl,
         mapTypeControlOptions: {
-            // mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
-            mapTypeIds: ["Cadastre", "Orthophoto"],
+            mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
+            //mapTypeIds: ["Cadastre", "Orthophoto"],
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
         }
     });
