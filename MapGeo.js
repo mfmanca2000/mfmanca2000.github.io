@@ -248,9 +248,8 @@ function init() {
 
     }
 
-    map.addListener('zoom_changed', function() {
-        zoomLevel = map.getZoom();
-        if (zoomLevel >= 13) {
+    map.addListener('zoom_changed', function() {        
+        if (map.getZoom() >= 13) {
             GebauedekarteType.setMap(map);
         } else {
             GebauedekarteType.setMap(null);
