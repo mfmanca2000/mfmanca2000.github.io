@@ -226,13 +226,10 @@ function init() {
 
     map.mapTypes.set("Cadastre", CadastrekarteType);
     map.setMapTypeId("Cadastre");
-
     map.mapTypes.set("Orthophoto", OrthophotoType);
-
     map.mapTypes.set("Adresses", GebauedekarteType);
 
     //map.overlayMapTypes.insertAt(1, CadastreInfoType);
-
     map.overlayMapTypes.insertAt(1, GebauedekarteType);
 
     geocoder = new google.maps.Geocoder();
@@ -250,6 +247,17 @@ function init() {
         getPlaceGeoAdmin({ latLng: latlng });
 
     }
+
+    map.addListener('zoom_changed', function() {
+        zoomLevel = map.getZoom();
+        if (zoomLevel >= 13) {
+            GebauedekarteType.setMap(map);
+        } else {
+            GebauedekarteType.setMap(null);
+        }
+    });
+
+
 
 
     const autocompleteInput = getFormInputElement('location');
