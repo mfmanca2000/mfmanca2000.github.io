@@ -206,8 +206,8 @@ function init() {
         zoomControl: CONFIGURATION.mapOptions.zoomControl,
         streetViewControl: CONFIGURATION.mapOptions.streetViewControl,
         mapTypeControlOptions: {
-            mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
-            //mapTypeIds: ["Cadastre", "Orthophoto"],
+            //mapTypeIds: ["Cadastre", "Orthophoto", "Adresses"],
+            mapTypeIds: ["Cadastre", "Orthophoto"],
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
         }
     });
@@ -231,6 +231,7 @@ function init() {
 
     //map.overlayMapTypes.insertAt(1, CadastreInfoType);
     //map.overlayMapTypes.insertAt(1, GebauedekarteType);
+    map.overlayMapTypes.push(null); //we reserve a place for the addresses layer
 
     geocoder = new google.maps.Geocoder();
 
@@ -250,10 +251,10 @@ function init() {
 
     map.addListener('zoom_changed', function() {    
         console.log('PASSING BY HERE WHEN ZOOM: ' + map.getZoom());    
-        if (map.getZoom() >= 19) {
-            //map.overlayMapTypes.insertAt(1, GebauedekarteType);            
+        if (map.getZoom() >= 17) {
+            map.overlayMapTypes.insertAt(1, GebauedekarteType);            
         } else {
-            //map.overlayMapTypes.removeAt(1);
+            map.overlayMapTypes.removeAt(1);
         }
     });
 
