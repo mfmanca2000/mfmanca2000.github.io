@@ -241,7 +241,7 @@ function init() {
     });
 
     map.addListener('zoom_changed', function() {            
-        if (map.getZoom() >= 19) {        
+        if (map.getZoom() >= 17) {        
             map.overlayMapTypes.setAt(1, GebauedekarteType);            
         } else {            
             map.overlayMapTypes.setAt(1, null);
