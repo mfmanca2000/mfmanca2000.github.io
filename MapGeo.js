@@ -10,6 +10,7 @@ let response;
 let responseDiv;
 let debugMode;
 let language;
+let environment;
 
 var map;
 
@@ -18,9 +19,12 @@ var fakeResults = JSON.parse('{"results": [{"address_components":[{"long_name":"
 
 const EXTENT = [-Math.PI * 6378137, Math.PI * 6378137];
 
+var BASE_URL = "https://wmts.geo.admin.ch";
 //const WMS_LAYERNAME = "ch.swisstopo.amtliches-gebaeudeadressverzeichnis";
 const WMS_LAYERNAME_ADDRESSES = "ch.bfs.gebaeude_wohnungs_register";
 const WMS_LAYERNAME_CADASTRE_INFO = "ch.swisstopo-vd.stand-oerebkataster";
+const LAYERNAME_CADASTRE_MAP = "ch.kantone.cadastralwebmap-farbe";
+const LAYERNAME_SWISSTOP_IMAGE = "ch.swisstopo.swissimage";
 
 function xyzToBounds(x, y, z) {
     const tileSize = EXTENT[1] * 2 / Math.pow(2, z);
@@ -71,7 +75,7 @@ function init() {
     const submitButton = document.getElementById('send-address');
     const cancelButton = document.getElementById('cancel');
     submitButton.addEventListener("click", () => sendPlace(place));
-    cancelButton.addEventListener("click", () => sendPlace());
+    cancelButton.addEventListener("click", () => sendPlace(null));
 
     try {
         var params = new URLSearchParams(window.location.search);
@@ -82,6 +86,7 @@ function init() {
         latitude = params.get('lat');
         longitude = params.get('lng');
         language = params.get("language");
+        environment = params.get("env");
 
         if (latitude === null || latitude === "" || longitude === null || longitude === "") {
             //We center on Fribourg without a marker
@@ -94,7 +99,7 @@ function init() {
             longitude = parseFloat(longitude);
             zoom = 16;
         }
-        
+
         if (language == 'de') {
             document.getElementById('send-address').innerHTML = 'Auswählen';
             document.getElementById('cancel').innerHTML = 'Abbrechen';
@@ -121,21 +126,6 @@ function init() {
 
     const getFormInputElement = (component) => document.getElementById(component + '-input');
 
-
-
-    var BASE_URL = "https://wmts.geo.admin.ch";
-
-    var layer = "ch.kantone.cadastralwebmap-farbe";
-    var format = "png";
-    var url =
-        BASE_URL +
-        "/1.0.0/" +
-        layer +
-        "/default/current/3857/{z}/{x}/{y}." +
-        format;
-
-    //Define OSM map type pointing at the OpenStreetMap tile server
-
     var CadastrekarteType = new google.maps.ImageMapType({
         maxZoom: 19,
         minZoom: 7,
@@ -146,7 +136,7 @@ function init() {
             return (
                 BASE_URL +
                 "/1.0.0/" +
-                layer +
+                LAYERNAME_CADASTRE_MAP +
                 "/default/current/3857/" +
                 zoom +
                 "/" +
@@ -167,7 +157,9 @@ function init() {
         getTileUrl: function (coord, zoom) {
             return (
                 BASE_URL +
-                "/1.0.0/ch.swisstopo.swissimage/default/current/3857/" +
+                "/1.0.0/" +
+                LAYERNAME_SWISSTOP_IMAGE +
+                "/default/current/3857/" +
                 zoom +
                 "/" +
                 coord.x +
@@ -240,10 +232,10 @@ function init() {
         getPlaceGeoAdmin(e);
     });
 
-    map.addListener('zoom_changed', function() {            
-        if (map.getZoom() >= 17) {        
-            map.overlayMapTypes.setAt(1, GebauedekarteType);            
-        } else {            
+    map.addListener('zoom_changed', function () {
+        if (map.getZoom() >= 17) {
+            map.overlayMapTypes.setAt(1, GebauedekarteType);
+        } else {
             map.overlayMapTypes.setAt(1, null);
         }
     });
@@ -257,7 +249,7 @@ function init() {
 
     }
 
-    
+
     const autocompleteInput = getFormInputElement('location');
 
     const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
@@ -343,9 +335,22 @@ function init() {
 
 
     async function sendPlace(body) {
+        var serverAddr;
+        if (environment == 'CLOUD') {
+            serverAddr = 'https://bcf-mortgage-dev.appway.com';
+        } else if (environment == 'DEV') {
+            serverAddr = 'https://onboardingd.frcorp.ch';
+        } else if (environment == 'TEST') {
+            serverAddr = 'https://onboardingt.frcorp.ch';
+        } else if (environment == 'PROD') {
+            serverAddr = 'https://onboarding.frcorp.ch';
+        }
+
+
+        //the Cancel button sends a null parameter
         if (body === null) {
             try {
-                const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
+                const res = await fetch(serverAddr + '/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
                     method: 'POST',
                     body: '{ "results": []}', // string or object
                     headers: {
@@ -354,14 +359,13 @@ function init() {
                         'User-Agent': 'AppwayClient',
                     },
                 });
-                window.close();
             }
             catch (e) {
                 alert('An error occurred:' + e)
             }
         } else {
             try {
-                const res = await fetch('https://bcf-mortgage-dev.appway.com/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
+                const res = await fetch(serverAddr + '/api/GoogleMaps/geocode/v1/' + processInstanceId + '/' + propertyId, {
                     method: 'POST',
                     body: JSON.stringify(body), // string or object
                     headers: {
@@ -513,7 +517,7 @@ function init() {
             fillColor: "#FFFF00",
             fillOpacity: 0.6,
         });
-        terrainPolygon.addListener("click", (e) => {            
+        terrainPolygon.addListener("click", (e) => {
             getPlaceGeoAdmin(e);
         });
         terrainPolygon.setMap(map);
