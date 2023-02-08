@@ -339,8 +339,7 @@ function init() {
 
 
 
-    async function sendPlace(body) {
-        showPleaseWait();
+    async function sendPlace(body) {        
 
         var serverAddr;
         if (environment == 'CLOUD') {
@@ -561,16 +560,7 @@ function init() {
             .then(response => response.json())
             .then(response => getPolygonGeoAdmin(response, coordsCH[0], coordsCH[1]));
 
-    }
-
-    function showPleaseWait() {
-        document.getElementById('pleaseWaitDialog').style.visibility = 'visible';
-    }
-    
-    
-    function hidePleaseWait() {
-        document.getElementById('pleaseWaitDialog').modal("hide");
-    }
+    }    
 }
 
 window.init = init;

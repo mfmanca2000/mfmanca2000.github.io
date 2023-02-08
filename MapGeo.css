@@ -91,18 +91,7 @@ input:focus::placeholder {
     background: #a4b2cf;
 }
 
-.modal {
-    background-color: blue;
-    opacity: 0.4;
-    visibility: hidden;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width:100%;
-    height:100%;
-    text-align:center;
-    z-index: 1000;
-}
+
 
 .button-cancel {
     height: 40px;
