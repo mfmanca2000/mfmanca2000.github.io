@@ -272,6 +272,7 @@ function init() {
         }
         renderAddress(place);
         fillInAddress(place);
+        submitButton.disabled = false;
 
         if (debugMode == 'true') {
             responseDiv.style.display = "block";
@@ -392,11 +393,13 @@ function init() {
     function getAllInfoGeoAdmin(info, latLng) {
         if (info.results.length > 0) {
             console.log(JSON.stringify(info));
+            submitButton.disabled = false;
             fillInAddressGeoAdmin(info);
             renderAddressGeoAdmin(latLng);
             setFakeResults(info, latLng);
         } else {
             marker.setVisible(false);
+            submitButton.disabled = true;
             emptyAddressGeoAdmin();
             emptyDebugResponse();
         }
