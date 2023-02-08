@@ -79,14 +79,16 @@ function init() {
 
     try {
         var params = new URLSearchParams(window.location.search);
-
-        debugMode = params.get('debug');
+        
         processInstanceId = params.get('processInstanceId');
         propertyId = params.get('propertyId');
         latitude = params.get('lat');
         longitude = params.get('lng');
         language = params.get("language");
         environment = params.get("env");
+        if (environment == 'CLOUD' || environment == 'DEV') {
+            debugMode = true;
+        }
 
         if (latitude === null || latitude === "" || longitude === null || longitude === "") {
             //We center on Fribourg without a marker
