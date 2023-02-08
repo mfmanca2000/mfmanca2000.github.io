@@ -564,7 +564,7 @@ function init() {
     }
 
     function showPleaseWait() {
-        document.getElementById('pleaseWaitDialog').modal("show");
+        document.getElementById('pleaseWaitDialog').removeAttribute("hidden");
     }
     
     
