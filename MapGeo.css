@@ -86,6 +86,11 @@ input:focus::placeholder {
     cursor: pointer;
 }
 
+.button-cta:disabled,
+.button-cta[disabled]{
+    background: #a4b2cf;
+}
+
 .button-cancel {
     height: 40px;
     width: 50%;
