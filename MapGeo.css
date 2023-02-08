@@ -91,6 +91,10 @@ input:focus::placeholder {
     background: #a4b2cf;
 }
 
+.modal {
+    display: block;
+}
+
 .button-cancel {
     height: 40px;
     width: 50%;
