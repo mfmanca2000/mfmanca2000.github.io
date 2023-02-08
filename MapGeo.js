@@ -582,7 +582,7 @@ function init() {
                     </div>\
                 </div>\
             </div>';
-            $(document.body).append(modalLoading);
+            document.body.appendChild(modalLoading);
         }
       
         $("#pleaseWaitDialog").modal("show");
