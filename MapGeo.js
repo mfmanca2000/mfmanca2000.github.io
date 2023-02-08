@@ -585,12 +585,12 @@ function init() {
             document.body.appendChild(modalLoading);
         }
       
-        $("#pleaseWaitDialog").modal("show");
+        document.getElementById('pleaseWaitDialog').modal("show");
     }
     
     
     function hidePleaseWait() {
-        $("#pleaseWaitDialog").modal("hide");
+        document.getElementById('pleaseWaitDialog').modal("hide");
     }
 }
 
