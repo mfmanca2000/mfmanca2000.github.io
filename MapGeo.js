@@ -73,8 +73,8 @@ String.prototype.format = function () {
 
 function init() {
     const submitButton = document.getElementById('send-address');
-    const cancelButton = document.getElementById('cancel');
-    submitButton.addEventListener("click", () => sendPlace(place));
+    const cancelButton = document.getElementById('cancel');    
+    submitButton.addEventListener("click", () => sendPlace(place));    
     cancelButton.addEventListener("click", () => sendPlace(null));
 
     try {
@@ -93,11 +93,13 @@ function init() {
             latitude = 46.8019884;
             longitude = 7.1512056;
             zoom = 18;
+            submitButton.disabled = true;
         } else {
             markerRequested = true; //we will add a marker further down in this code
             latitude = parseFloat(latitude);
             longitude = parseFloat(longitude);
             zoom = 16;
+            submitButton.disabled = false;
         }
 
         if (language == 'de') {
